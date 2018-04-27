@@ -102,8 +102,7 @@ int main(void)
 
         if (strcmp(args[0], "cd") == 0) {
             if (args[1]) {
-                int chdirstatus = chdir(args[1]);
-                if (chdirstatus == -1) {
+                if (chdir(args[1]) == -1) {
                     perror("chdir");
                 } else {
                     continue;
