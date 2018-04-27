@@ -90,15 +90,6 @@ int main(void)
             break;
         }
 
-        pid_t pid = fork();
-        if (pid < 0) {
-            fprintf(stderr, "fork failed\n");
-            exit(1);
-        } else if (pid == 0) {
-            execvp(args[0], &args[0]);
-        } else {
-            waitpid(pid, NULL, 0);
-        }
 
         if (strcmp(args[0], "cd") == 0) {
             if (args[1]) {
@@ -122,7 +113,17 @@ int main(void)
         #endif
         
         /* Add your code for implementing the shell's logic here */
-        
+        pid_t pid = fork();
+        if (pid < 0) {
+            fprintf(stderr, "fork failed\n");
+            exit(1);
+        } else if (pid == 0) {
+            execvp(args[0], args);
+            perror("exec");
+            exit(1);
+        } else {
+            waitpid(pid, NULL, 0);
+        }
     }
 
     return 0;
